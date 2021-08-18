@@ -1,0 +1,52 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js" integrity="sha512-XTa+nLKjbTCUazCWzwYpykjsTQDaepuKlg9YToCij7+Bdi9aHQhBQlV0rfnYmactJjHdusRQQV+6qWNNv0BScA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    var cells_with_formula = [];
+    const recalculateValues = () => {
+        cells_with_formula.forEach(cell => {
+            cell = document.querySelector(`#${cell} input`);
+            if (cell) {
+                let formula = cell.dataset.f;
+                let formula_arr = formula.split(" ");
+                let exp = '';
+                formula_arr.forEach(elm => {
+                    if (isNaN(elm) && document.getElementById(elm)) {
+                        exp += document.querySelector(`#${elm} input`).value;
+                    } else {
+                        exp += elm;
+                    }
+                });
+                try {
+                    cell.value = math.evaluate(exp);
+                } catch (error) {
+                    cell.value = '';
+                }
+            }
+        });
+    }
+
+    const setup = () => {
+        let tds = document.getElementsByTagName('td');
+        tds.forEach(td => {
+            let id = td.id;
+
+            let input = document.querySelector(`#${id} input`);
+            if (input) {
+                input.disabled = input.dataset.disabled == "true" ? true : false;
+                input.value = input.dataset.value;
+                if (input.dataset.f) {
+                    cells_with_formula.push(id);
+                    input.addEventListener("keyup", recalculateValues);
+                } else {
+                    input.addEventListener("keyup", recalculateValues);
+                }
+            }
+        });
+    }
+
+    setup();
+</script>

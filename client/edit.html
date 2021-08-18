@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <h3>Options:</h3>
+
+    <div class="m-5">
+        <!-- <button class="btn btn-info btn-sm" onclick="disableAll()">Disable all</button>
+        <button class="btn btn-info btn-sm" onclick="enable()">Enable all</button> -->
+
+        <form action="/download" method="POST" id="downloader">
+            <!-- Row count: <input type="number" id="row_count"> Col count: <input type="number" id="col_count"> -->
+            <textarea name="table-content" id="table-content" class="d-none"></textarea>
+        </form>
+
+        <button class="btn btn-success btn-sm" onclick="download()">Download Html</button>
+    </div>
+
+    <div id="table-container">
+
+        <table id="table"></table>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js" integrity="sha512-XTa+nLKjbTCUazCWzwYpykjsTQDaepuKlg9YToCij7+Bdi9aHQhBQlV0rfnYmactJjHdusRQQV+6qWNNv0BScA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/index.js"></script>
+
+    <script>
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+
+        socket.emit('get-json', params.name);
+    </script>
+    <script src="/edit.js"></script>
+</body>
+
+</html>
