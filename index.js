@@ -11,9 +11,6 @@ const io = require('socket.io')(server, {
 const fs = require('fs');
 app.use(upload());
 app.use(express.static('static'))
-    // app.use(express.json()); // Used to parse JSON bodies
-    // app.use(express.urlencoded()); //Parse URL-encoded bodies
-    // app.use(express.bodyParser({ limit: '50mb' }));
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -52,11 +49,14 @@ app.post("/download", (req, res) => {
             "./htmls/" + filename + ".html",
             req.body['table-content'] + data,
             err => {
-                if (err) throw err;
-                // console.log('saved');
+                if (err) {
+                    res.sendStatus(500);
+                    return;
+                }
+                console.log('saved', filename);
+                res.download("./htmls/" + filename + ".html", "html.html");
             });
     })
-    res.send("File saved in /htmls/" + filename + ".html");
 });
 
 app.post("/get-uploaded-files", (req, res) => {
