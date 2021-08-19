@@ -64,11 +64,20 @@ const formatFormula = (f) => {
     res = res
         .replace(/\(/g, ' ( ')
         .replace(/\)/g, ' ) ')
+        .replace(/\{/g, ' { ')
+        .replace(/\}/g, ' } ')
+        .replace(/\[/g, ' [ ')
+        .replace(/\]/g, ' ] ')
         .replace(/\+/g, ' + ')
         .replace(/\-/g, ' - ')
         .replace(/\*/g, ' * ')
         .replace(/\//g, ' / ')
         .replace(/\:/g, ' : ')
+        .replace(/\!/g, ' ! ')
+        .replace(/\%/g, ' % ')
+        .replace(/\^/g, ' ^ ')
+        .replace(/\&/g, ' & ')
+        .replace(/\=/g, ' = ')
 
     return res;
 }
