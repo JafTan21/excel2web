@@ -66,7 +66,7 @@ app.post("/download", (req, res) => {
                         return;
                     }
                     console.log('saved', filename);
-                    res.downoad("./htmls/" + filename + ".html", "html.html");
+                    res.download("./htmls/" + filename + ".html", "html.html");
                 });
         } catch (error) {
             console.log(error)
