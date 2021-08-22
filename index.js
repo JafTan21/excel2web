@@ -19,13 +19,21 @@ io.on("connection", (socket) => {
     console.log('connected');
 
     socket.on('get-json', (filename) => {
-        var workbook = XLSX.readFile('./uploads/' + filename);
-        socket.emit('send-json', workbook);
+        try {
+            var workbook = XLSX.readFile('./uploads/' + filename);
+            socket.emit('send-json', workbook);
+        } catch (err) {
+            console.log(err)
+        }
     });
 
     socket.on('get-file-data', (file) => {
-        var workbook = XLSX.readFile(file);
-        socket.emit('send-json', workbook);
+        try {
+            var workbook = XLSX.readFile(file);
+            socket.emit('send-json', workbook);
+        } catch (error) {
+            console.log(error)
+        }
     });
 
 });
@@ -34,6 +42,9 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + "/client/index.html");
 })
 
+app.get('/download', function(req, res) {
+    res.sendFile(__dirname + "/client/index.html");
+})
 
 app.post("/download", (req, res) => {
     // console.log(req.body['table-content']);
@@ -45,17 +56,21 @@ app.post("/download", (req, res) => {
         }
         // console.log(data)
 
-        fs.writeFile(
-            "./htmls/" + filename + ".html",
-            req.body['table-content'] + data,
-            err => {
-                if (err) {
-                    res.sendStatus(500);
-                    return;
-                }
-                console.log('saved', filename);
-                res.download("./htmls/" + filename + ".html", "html.html");
-            });
+        try {
+            fs.writeFile(
+                "./htmls/" + filename + ".html",
+                req.body['table-content'] + data,
+                err => {
+                    if (err) {
+                        res.sendStatus(500);
+                        return;
+                    }
+                    console.log('saved', filename);
+                    res.downoad("./htmls/" + filename + ".html", "html.html");
+                });
+        } catch (error) {
+            console.log(error)
+        }
     })
 });
 
@@ -76,18 +91,27 @@ app.post('/upload', (req, res) => {
         var file = req.files.file
         var filename = file.name
 
-        file.mv('./uploads/' + (new Date).getTime() + "__" + filename, (err) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.redirect("/");
-            }
-        })
+        try {
+            file.mv('./uploads/' + (new Date).getTime() + "__" + filename, (err) => {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.redirect("/");
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 })
 
 app.get('/upload', function(req, res) {
-    res.sendFile(__dirname + "/client/upload.html");
+    try {
+
+        res.sendFile(__dirname + "/client/upload.html");
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.get("/edit", (req, res) => {
